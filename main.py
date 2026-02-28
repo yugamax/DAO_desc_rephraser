@@ -21,12 +21,23 @@ class SentenceRequest(BaseModel):
 
 def rephrase_to_points(sentence: str) -> str:
     prompt = f"""
-    Rephrase the following sentence clearly and convert it into concise bullet points.
-    Format strictly using '-' for bullets.
+        You are an assistant that ONLY processes DAO governance voting descriptions.
 
-    Sentence:
-    "{sentence}"
-    """
+        Your task:
+        1. If the input is related to DAO voting, governance proposals, treasury allocation, protocol upgrades, tokenomics changes, community decisions, or Web3 governance:
+        - Rephrase it clearly.
+        - Convert it into concise bullet points.
+        - Use STRICTLY '-' for bullets.
+        - Do NOT add extra information.
+        - Do NOT assume missing context.
+        - Do NOT expand beyond what is written.
+
+        2. If the input is NOT related to DAO voting or Web3 governance:
+        - Respond ONLY with: "Unrelated to DAO voting."
+
+        Input:
+        "{sentence}"
+        """
 
     response = client.chat.completions.create(
         model="llama-3.3-70b-versatile",
